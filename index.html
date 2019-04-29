@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+		<meta name="generator" content="Adobe GoLive" />
+		<title>Quotas de camp Scouts et Guides de France</title>
+	</head>
+
+	<body>
+	
+	
+    
+<script type="text/javascript">
+function validationChamps()
+{
+	var nbDirecteurs = document.forms["FormQuotas"].elements["textfieldDirecteursSF"];
+	var nbAnimateurs = document.forms["FormQuotas"].elements["textfieldAnimateursSF"];
+	var nbNonQualifies = document.forms["FormQuotas"].elements["textfieldNonQualifies"];
+	var nbJeunes = document.forms["FormQuotas"].elements["textfieldJeunes"];
+	if (nbDirecteurs.value == "")
+	{
+		window.alert("Merci de rentrer le nombre de personnes avec la qualification \"Directeur SF titulaire\""); 
+        nbDirecteurs.focus(); 
+        return false;
+	}
+	if (nbAnimateurs.value == "")
+	{
+		window.alert("Merci de rentrer le nombre de personnes avec la qualification \"Animateur SF titulaire\""); 
+        nbAnimateurs.focus(); 
+        return false;
+	}
+	if (nbNonQualifies.value == "")
+	{
+		window.alert("Merci de rentrer le nombre de personnes sans qualification"); 
+        nbNonQualifies.focus(); 
+        return false;
+	}
+	if (nbJeunes.value == "")
+	{
+		window.alert("Merci de rentrer le nombre de jeunes"); 
+        nbJeunes.focus(); 
+        return false;
+	}
+	if (nbJeunes.value == "0")
+	{
+		window.alert("Merci de rentrer le nombre de jeunes > 0"); 
+        nbJeunes.focus(); 
+        return false;
+	}
+	
+	return true;
+}
+
+function afficheResultat($resultat, $detail)
+{
+	var champResultat = document.forms["FormQuotas"].elements["labelResultat"];
+	var champDetail = document.forms["FormQuotas"].elements["labelDetail"];
+
+	champResultat.value = $resultat == true ? "Ok" : "Pas bon";
+	champDetail.value = $detail;
+}
+
+function calculQuotas()
+{
+	var ret = validationChamps();
+	if (ret == true)
+	{
+		var nbDirecteurs = document.forms["FormQuotas"].elements["textfieldDirecteursSF"].value;
+		var nbAnimateurs = document.forms["FormQuotas"].elements["textfieldAnimateursSF"].value;
+		var nbNonQualifies = document.forms["FormQuotas"].elements["textfieldNonQualifies"].value;
+		var unite = document.forms["FormQuotas"].elements["radioUnite"].value;
+		var nbJeunes = document.forms["FormQuotas"].elements["textfieldJeunes"].value;
+		var pk = (unite.toString().indexOf("radioPionniersCaravelles") == 0);
+		
+		if (pk == true)
+		{
+			// Calcul pour une unité pionniers et/ou caravelles
+			var deltaDirSF = nbDirecteurs;
+			if (deltaDirSF < 0)
+			{
+				afficheResultat(false,"Pas de directeur SF");
+				return;
+			}
+
+			// Etape N°1
+			var encadrementEtape1 = Math.ceil(nbJeunes / 12);
+			var effectifEtape1 = parseInt(nbDirecteurs,10) + parseInt(nbAnimateurs,10) + parseInt(nbNonQualifies,10);
+			var deltaEtape1 = effectifEtape1 - encadrementEtape1;
+			if (deltaEtape1 < 0)
+			{
+				afficheResultat(false,"Encadrement \"1 chef pour 12 jeunes\" insuffisant");
+				return;
+			}
+
+			// Etape N°2
+			var encadrementEtape2 = Math.ceil(nbJeunes*0.5 / 12);
+			var effectifEtape2 = parseInt(nbDirecteurs,10) + parseInt(nbAnimateurs,10);
+			var deltaEtape2 = effectifEtape2 - encadrementEtape2;
+			if (deltaEtape2 < 0)
+			{
+				afficheResultat(false,"Encadrement \"par rapport au minimum d'animateurs : 50% titulaire\" insuffisant");
+				return;
+			}
+
+			// Etape N°3
+			var encadrementEtape3 = Math.ceil(nbJeunes*0.8 / 12);
+			var effectifEtape3 = parseInt(nbDirecteurs,10) + parseInt(nbAnimateurs,10) + parseInt(nbNonQualifies,10);
+			var deltaEtape3 = effectifEtape3 - encadrementEtape3;
+			if (deltaEtape3 < 0)
+			{
+				afficheResultat(false,"Encadrement \"par rapport au minimum d'animateurs : 80% titulaire ou stagiaire\" insuffisant");
+				return;
+			}
+		}
+		else
+		{
+			// Calcul pour les autres unites
+			var deltaDirSF = nbDirecteurs - 1;
+			if (deltaDirSF < 0)
+			{
+				afficheResultat(false,"Pas de directeur SF");
+				return;
+			}
+
+			// Etape N°1
+			var encadrementEtape1 = Math.ceil(nbJeunes / 12)+1;
+			var effectifEtape1 = parseInt(nbDirecteurs,10) + parseInt(nbAnimateurs,10) + parseInt(nbNonQualifies,10);
+			var deltaEtape1 = effectifEtape1 - encadrementEtape1;
+			if (deltaEtape1 < 0)
+			{
+				afficheResultat(false,"Encadrement \"1 chef pour 12 jeunes plus directeur\" insuffisant");
+				return;
+			}
+
+			// Etape N°2
+			var encadrementEtape2 = Math.ceil(nbJeunes*0.5 / 12)+1;
+			var effectifEtape2 = parseInt(nbDirecteurs,10) + parseInt(nbAnimateurs,10);
+			var deltaEtape2 = effectifEtape2 - encadrementEtape2;
+			if (deltaEtape2 < 0)
+			{
+				afficheResultat(false,"Encadrement \"par rapport au minimum d'animateurs : 50% titulaire + 1 dir titulaire\" insuffisant");
+				return;
+			}
+
+			// Etape N°3
+			var encadrementEtape3 = Math.ceil(nbJeunes*0.8 / 12)+1;
+			var effectifEtape3 = parseInt(nbDirecteurs,10) + parseInt(nbAnimateurs,10) + parseInt(nbNonQualifies,10);
+			var deltaEtape3 = effectifEtape3 - encadrementEtape3;
+			if (deltaEtape3 < 0)
+			{
+				afficheResultat(false,"Encadrement \"par rapport au minimum d'animateurs : 80% titulaire ou stagiaire + 1 dir titulaire\" insuffisant");
+				return;
+			}
+		}
+		afficheResultat(true,"");
+	}
+}
+</script>
+
+		<h2>Calculs de quotas de camp Scouts et Guides de France</h2>
+		<form id="FormQuotas" action="(EmptyReference!)" method="post" name="FormQuotas">
+			<fieldset>
+				<legend>Unité</legend><input type="radio" name="radioUnite" value="radioLouveteauxJeannettes" checked="checked" />Louveteaux / Jeannettes <input type="radio" name="radioUnite" value="radioScoutsGuides" />Scouts / Guides <input type="radio" name="radioUnite" value="radioPionniersCaravelles" />Pionniers / Caravelles
+				<p><label>Nb de jeunes :</label><input type="text" name="textfieldJeunes" value="0" size="24"/></p>
+			</fieldset>
+			<fieldset>
+				<legend>Qualifications</legend>
+			<table width="75%" border="0" cellspacing="2" cellpadding="0">
+					<tr>
+						<td><label>Nombre de personnes avec la qualification &quot;<strong>Directeur SF titulaire</strong>&quot;</label></td>
+						<td><input type="text" name="textfieldDirecteursSF" value="0" size="24" /></td>
+					</tr>
+					<tr>
+						<td><label>Nombre de personnes avec la qualification &quot;<strong>Animateur SF titulaire</strong>&quot;</label></td>
+						<td><input type="text" name="textfieldAnimateursSF" value="0" size="24" /></td>
+					</tr>
+					<tr>
+						<td><label>Nombre de personnes sans qualification</label></td>
+						<td><input type="text" name="textfieldNonQualifies" value="0" size="24" /></td>
+					</tr>
+				</table>
+		</fieldset>
+			<fieldset>
+				<legend>Calcul</legend>
+				<p></p>
+				<table width="75%" border="0" cellspacing="2" cellpadding="0">
+					<tr>
+						<td><button name="buttonName" type="button" onclick="calculQuotas();">Calcul</button></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td rowspan="2"></td>
+						<td><label>Résultat du calcul :</label></td>
+						<td><input type="text" name="labelResultat" readonly="readonly" size="50"/></td>
+					</tr>
+					<tr>
+						<td><label>Détails :</label></td>
+						<td><textarea type="text" name="labelDetail" rows="4" cols="48" disabled="disabled" readonly="readonly" size="50"></textarea></td>
+					</tr>
+				</table>
+				<p></p>
+				 
+			</fieldset>
+		</form>
+		<h6>Version 1.0.0</h6>
+	</body>
+
+</html>
