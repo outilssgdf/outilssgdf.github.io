@@ -4,7 +4,7 @@
 
 	<head>
 		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-		<meta name="generator" content="Adobe GoLive" />
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
 		<title>Quotas de camp Scouts et Guides de France</title>
 	</head>
 
@@ -163,42 +163,41 @@ function calculQuotas()
 		<form id="FormQuotas" action="(EmptyReference!)" method="post" name="FormQuotas">
 			<fieldset>
 				<legend>Unité</legend><input type="radio" name="radioUnite" value="radioLouveteauxJeannettes" checked="checked" />Louveteaux / Jeannettes <input type="radio" name="radioUnite" value="radioScoutsGuides" />Scouts / Guides <input type="radio" name="radioUnite" value="radioPionniersCaravelles" />Pionniers / Caravelles
-				<p><label>Nb de jeunes :</label><input type="text" name="textfieldJeunes" value="0" size="24"/></p>
+				<p><label>Nb de jeunes :</label><input type="text" name="textfieldJeunes" value="0" size="5"/></p>
 			</fieldset>
 			<fieldset>
 				<legend>Qualifications</legend>
-			<table width="75%" border="0" cellspacing="2" cellpadding="0">
+			<table width="100%" border="0" cellspacing="2" cellpadding="0">
 					<tr>
-						<td><label>Nombre de personnes avec la qualification &quot;<strong>Directeur SF titulaire</strong>&quot;</label></td>
-						<td><input type="text" name="textfieldDirecteursSF" value="0" size="24" /></td>
+						<td><label>Qualification &quot;<strong>Directeur SF titulaire</strong>&quot;</label></td>
+						<td><input type="text" name="textfieldDirecteursSF" value="0" size="5" /></td>
 					</tr>
 					<tr>
-						<td><label>Nombre de personnes avec la qualification &quot;<strong>Animateur SF titulaire</strong>&quot;</label></td>
-						<td><input type="text" name="textfieldAnimateursSF" value="0" size="24" /></td>
+						<td><label>Qualification &quot;<strong>Animateur SF titulaire</strong>&quot;</label></td>
+						<td><input type="text" name="textfieldAnimateursSF" value="0" size="5" /></td>
 					</tr>
 					<tr>
-						<td><label>Nombre de personnes sans qualification</label></td>
-						<td><input type="text" name="textfieldNonQualifies" value="0" size="24" /></td>
+						<td><label>Sans qualification</label></td>
+						<td><input type="text" name="textfieldNonQualifies" value="0" size="5" /></td>
 					</tr>
 				</table>
 		</fieldset>
+			<legend>Calcul</legend>
+		<fieldset>
+				<button name="buttonName" type="button" onclick="calculQuotas();">Calcul</button>
+		</fieldset>
 			<fieldset>
-				<legend>Calcul</legend>
+				<legend>Résultat</legend>
 				<p></p>
-				<table width="75%" border="0" cellspacing="2" cellpadding="0">
-					<tr>
-						<td><button name="buttonName" type="button" onclick="calculQuotas();">Calcul</button></td>
-						<td></td>
-						<td></td>
-					</tr>
+				<table width="100%" border="0" cellspacing="2" cellpadding="0">
 					<tr>
 						<td rowspan="2"></td>
 						<td><label>Résultat du calcul :</label></td>
-						<td><input type="text" name="labelResultat" readonly="readonly" size="50"/></td>
+						<td><input type="text" name="labelResultat" readonly="readonly" size="10"/></td>
 					</tr>
 					<tr>
 						<td><label>Détails :</label></td>
-						<td><textarea type="text" name="labelDetail" rows="4" cols="48" disabled="disabled" readonly="readonly" size="50"></textarea></td>
+						<td><textarea type="text" name="labelDetail" rows="4" cols="30" disabled="disabled" readonly="readonly" size="50"></textarea></td>
 					</tr>
 				</table>
 				<p></p>
