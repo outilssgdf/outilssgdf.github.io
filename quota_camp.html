@@ -15,6 +15,7 @@
 		function validationChamps() {
 			var nbDirecteurs = document.forms["FormQuotas"].elements["textfieldDirecteursSF"];
 			var nbAnimateurs = document.forms["FormQuotas"].elements["textfieldAnimateursSF"];
+			var nbAnimateursStagiaire = document.forms["FormQuotas"].elements["textfieldAnimateursSFstagiaire"];
 			var nbNonQualifies = document.forms["FormQuotas"].elements["textfieldNonQualifies"];
 			var nbJeunes = document.forms["FormQuotas"].elements["textfieldJeunes"];
 			if (nbDirecteurs.value == "") {
@@ -25,6 +26,11 @@
 			if (nbAnimateurs.value == "") {
 				afficheResultat(false, "Merci de rentrer le nombre de personnes avec la qualification \"Animateur SF titulaire\"");
 				nbAnimateurs.focus();
+				return false;
+			}
+			if (nbAnimateursStagiaire.value == "") {
+				afficheResultat(false, "Merci de rentrer le nombre de personnes avec la qualification \"Animateur SF stagiaire\"");
+				nbAnimateursStagiaire.focus();
 				return false;
 			}
 			if (nbNonQualifies.value == "") {
@@ -59,12 +65,13 @@
 			if (ret == true) {
 				var nbDirecteurs = document.forms["FormQuotas"].elements["textfieldDirecteursSF"].value;
 				var nbAnimateurs = document.forms["FormQuotas"].elements["textfieldAnimateursSF"].value;
+				var nbAnimateursStagiaire = document.forms["FormQuotas"].elements["textfieldAnimateursSFstagiaire"].value;
 				var nbNonQualifies = document.forms["FormQuotas"].elements["textfieldNonQualifies"].value;
 				var unite = document.forms["FormQuotas"].elements["radioUnite"].value;
 				var nbJeunes = document.forms["FormQuotas"].elements["textfieldJeunes"].value;
 				var pk = (unite.toString().indexOf("radioPionniersCaravelles") == 0);
 
-				var effectifTotal = parseInt(nbDirecteurs, 10) + parseInt(nbAnimateurs, 10) + parseInt(nbNonQualifies, 10);
+				var effectifTotal = parseInt(nbDirecteurs, 10) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10) + parseInt(nbNonQualifies, 10);
 				
 				if (pk == true) {
 					// Calcul pour une unité pionniers et/ou caravelles
@@ -85,7 +92,7 @@
 
 					// Etape N°2
 					var encadrementEtape2 = Math.ceil(effectifTotal * 0.5 / 12);
-					var effectifEtape2 = parseInt(nbDirecteurs, 10) + parseInt(nbAnimateurs, 10);
+					var effectifEtape2 = parseInt(nbDirecteurs, 10) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10);
 					var deltaEtape2 = effectifEtape2 - encadrementEtape2;
 					if (deltaEtape2 < 0) {
 						afficheResultat(false, "Encadrement \"par rapport au minimum d'animateurs : 50% titulaire\" insuffisant");
@@ -93,17 +100,20 @@
 					}
 
 					// Etape N°2 bis
-					var encadrementEtape3 = effectifTotal * 0.2;
-					var effectifEtape3 = parseInt(nbNonQualifies, 10);
-					if (effectifTotal == 3 || effectifTotal == 4)
+					if (effectifTotal <= encadrementEtape1)
 					{
-						if (nbNonQualifies > 0)
-							encadrementEtape3 = 1;
-					}
-					var deltaEtape3 = encadrementEtape3 - effectifEtape3;
-					if (deltaEtape3 < 0) {
-						afficheResultat(false, "Encadrement \"par rapport au minimum d'animateurs : 80% titulaire ou stagiaire\" insuffisant");
-						return;
+						var encadrementEtape3 = effectifTotal * 0.2;
+						var effectifEtape3 = parseInt(nbNonQualifies, 10);
+						if (effectifTotal == 3 || effectifTotal == 4)
+						{
+							if (nbNonQualifies > 0)
+								encadrementEtape3 = 1;
+						}
+						var deltaEtape3 = encadrementEtape3 - effectifEtape3;
+						if (deltaEtape3 < 0) {
+							afficheResultat(false, "Encadrement \"par rapport au minimum d'animateurs : 80% titulaire ou stagiaire\" insuffisant");
+							return;
+						}
 					}
 				}
 				else {
@@ -125,7 +135,7 @@
 
 					// Etape N°2
 					var encadrementEtape2 = Math.ceil(effectifTotal * 0.5 / 12) + 1;
-					var effectifEtape2 = parseInt(nbDirecteurs, 10) + parseInt(nbAnimateurs, 10);
+					var effectifEtape2 = parseInt(nbDirecteurs, 10) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10);
 					var deltaEtape2 = effectifEtape2 - encadrementEtape2;
 					if (deltaEtape2 < 0) {
 						afficheResultat(false, "Encadrement \"par rapport au minimum d'animateurs : 50% titulaire + 1 dir titulaire\" insuffisant");
@@ -133,17 +143,20 @@
 					}
 
 					// Etape N°2 bis
-					var encadrementEtape3 = effectifTotal * 0.2;
-					var effectifEtape3 = parseInt(nbNonQualifies, 10);
-					if (effectifTotal == 3 || effectifTotal == 4)
+					if (effectifTotal <= encadrementEtape1)
 					{
-						if (nbNonQualifies > 0)
-							encadrementEtape3 = 1;
-					}
-					var deltaEtape3 = encadrementEtape3 - effectifEtape3;
-					if (deltaEtape3 < 0) {
-						afficheResultat(false, "Encadrement \"par rapport au minimum d'animateurs : 80% titulaire ou stagiaire + 1 dir titulaire\" insuffisant");
-						return;
+						var encadrementEtape3 = effectifTotal * 0.2;
+						var effectifEtape3 = parseInt(nbNonQualifies, 10);
+						if (effectifTotal == 3 || effectifTotal == 4)
+						{
+							if (nbNonQualifies > 0)
+								encadrementEtape3 = 1;
+						}
+						var deltaEtape3 = encadrementEtape3 - effectifEtape3;
+						if (deltaEtape3 < 0) {
+							afficheResultat(false, "Encadrement \"par rapport au minimum d'animateurs : 80% titulaire ou stagiaire + 1 dir titulaire\" insuffisant");
+							return;
+						}
 					}
 				}
 				afficheResultat(true, "");
@@ -164,12 +177,16 @@
 			<legend>Qualifications</legend>
 			<table width="100%" border="0" cellspacing="2" cellpadding="0">
 				<tr>
-					<td width="61%"><label>Qualifications &quot;<strong>Directeur SF titulaire</strong>&quot;</label></td>
+					<td width="61%"><label>Directeur SF titulaire</label></td>
 					<td align="right"><input type="text" name="textfieldDirecteursSF" value="0" size="2" onkeyup="calculQuotas();" /></td>
 				</tr>
 				<tr>
-					<td width="61%"><label>Qualifications &quot;<strong>Animateur SF titulaire</strong>&quot;</label></td>
+					<td width="61%">Animateur SF titulaire</label></td>
 					<td align="right"><input type="text" name="textfieldAnimateursSF" value="0" size="2" onkeyup="calculQuotas();" /></td>
+				</tr>
+				<tr>
+					<td width="61%">Animateur SF stagiaire</label></td>
+					<td align="right"><input type="text" name="textfieldAnimateursSFstagiaire" value="0" size="2" onkeyup="calculQuotas();" /></td>
 				</tr>
 				<tr>
 					<td width="61%"><label>Sans qualification</label></td>
