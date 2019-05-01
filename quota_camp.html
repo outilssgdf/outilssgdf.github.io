@@ -7,6 +7,25 @@
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
 	<title>Calculateur du taux d’encadrement</title>
+	<style>
+		html {
+			height: 100%;
+		}
+
+		body {
+			margin: 0;
+			padding: 0;
+			border: 0;
+		}
+
+		h4 {
+			margin: 5px;
+		}
+
+		h5 {
+			margin: 5px;
+		}
+	</style>
 </head>
 
 <body>
@@ -80,10 +99,10 @@
 				var pk = (unite.toString().indexOf("radioPionniersCaravelles") == 0);
 
 				var effectifTotal = parseInt(nbDirecteurs, 10) + parseInt(nbDirecteursStagiaire, 10) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10) + parseInt(nbNonQualifies, 10);
-				
+
 				if (pk == true) {
 					// Calcul pour une unité pionniers et/ou caravelles
-					var deltaDirSF = parseInt(nbDirecteurs,10)+parseInt(nbDirecteursStagiaire,10);
+					var deltaDirSF = parseInt(nbDirecteurs, 10) + parseInt(nbDirecteursStagiaire, 10);
 					if (deltaDirSF < 0) {
 						afficheResultat(false, "Pas de directeur SF");
 						return;
@@ -108,12 +127,10 @@
 					}
 
 					// Etape N°2 bis
-					if (effectifTotal <= encadrementEtape1)
-					{
+					if (effectifTotal <= encadrementEtape1) {
 						var encadrementEtape3 = effectifTotal * 0.2;
 						var effectifEtape3 = parseInt(nbNonQualifies, 10);
-						if (effectifTotal == 3 || effectifTotal == 4)
-						{
+						if (effectifTotal == 3 || effectifTotal == 4) {
 							if (nbNonQualifies > 0)
 								encadrementEtape3 = 1;
 						}
@@ -126,7 +143,7 @@
 				}
 				else {
 					// Calcul pour les autres unites
-					var deltaDirSF = parseInt(nbDirecteurs,10)+parseInt(nbDirecteursStagiaire,10)-1;
+					var deltaDirSF = parseInt(nbDirecteurs, 10) + parseInt(nbDirecteursStagiaire, 10) - 1;
 					if (deltaDirSF < 0) {
 						afficheResultat(false, "Pas de directeur SF");
 						return;
@@ -151,12 +168,10 @@
 					}
 
 					// Etape N°2 bis
-					if (effectifTotal <= encadrementEtape1)
-					{
+					if (effectifTotal <= encadrementEtape1) {
 						var encadrementEtape3 = effectifTotal * 0.2;
 						var effectifEtape3 = parseInt(nbNonQualifies, 10);
-						if (effectifTotal == 3 || effectifTotal == 4)
-						{
+						if (effectifTotal == 3 || effectifTotal == 4) {
 							if (nbNonQualifies > 0)
 								encadrementEtape3 = 1;
 						}
@@ -172,54 +187,63 @@
 		}
 	</script>
 
-	<h3>Calculateur du taux d’encadrement</h3>
-	<h5>(bas&eacute; sur le Guide R&eacute;glementaire du Scoutisme Fran&ccedil;ais <a href="https://www.scoutisme-francais.fr/formation">lien)</a></h5>
+	<h4>Calculateur du taux d’encadrement</h4>
+	<h5>(bas&eacute; sur le Guide R&eacute;glementaire du Scoutisme Fran&ccedil;ais <a
+			href="https://www.scoutisme-francais.fr/formation">lien)</a></h5>
 	<form id="FormQuotas" action="(EmptyReference!)" method="post" name="FormQuotas">
 		<fieldset>
-			<legend>Unité</legend><input type="radio" name="radioUnite" value="radioLouveteauxJeannettes" onclick="calculQuotas();"
-				checked="checked" />Louveteaux / Jeannettes <input type="radio" name="radioUnite" onclick="calculQuotas();"
-				value="radioScoutsGuides" />Scouts / Guides <input type="radio" name="radioUnite" onclick="calculQuotas();"
-				value="radioPionniersCaravelles" />Pionniers / Caravelles
-			<p><label>Nb de jeunes :</label><input type="text" name="textfieldJeunes" value="0" size="5" onkeyup="calculQuotas();" /></p>
+			<legend>Unité</legend><input type="radio" name="radioUnite" value="radioLouveteauxJeannettes"
+				onclick="calculQuotas();" checked="checked" />Louveteaux / Jeannettes <input type="radio"
+				name="radioUnite" onclick="calculQuotas();" value="radioScoutsGuides" />Scouts / Guides <input
+				type="radio" name="radioUnite" onclick="calculQuotas();" value="radioPionniersCaravelles" />Pionniers
+			/ Caravelles
+			<p><label>Nb de jeunes :</label><input type="text" name="textfieldJeunes" value="0" size="5"
+					onkeyup="calculQuotas();" /></p>
 		</fieldset>
 		<fieldset>
 			<legend>Qualifications</legend>
 			<table width="100%" border="0" cellspacing="2" cellpadding="0">
 				<tr>
 					<td width="61%"><label>Directeur SF titulaire</label></td>
-					<td align="right"><input type="text" name="textfieldDirecteursSF" value="0" size="2" onkeyup="calculQuotas();" /></td>
+					<td align="right"><input type="text" name="textfieldDirecteursSF" value="0" size="2"
+							onkeyup="calculQuotas();" /></td>
 				</tr>
 				<tr>
 					<td width="61%"><label>Directeur SF stagiaire</label></td>
-					<td align="right"><input type="text" name="textfieldDirecteursSFstagiaire" value="0" size="2" onkeyup="calculQuotas();" /></td>
+					<td align="right"><input type="text" name="textfieldDirecteursSFstagiaire" value="0" size="2"
+							onkeyup="calculQuotas();" /></td>
 				</tr>
 				<tr>
 					<td width="61%">Animateur SF titulaire</label></td>
-					<td align="right"><input type="text" name="textfieldAnimateursSF" value="0" size="2" onkeyup="calculQuotas();" /></td>
+					<td align="right"><input type="text" name="textfieldAnimateursSF" value="0" size="2"
+							onkeyup="calculQuotas();" /></td>
 				</tr>
 				<tr>
 					<td width="61%">Animateur SF stagiaire</label></td>
-					<td align="right"><input type="text" name="textfieldAnimateursSFstagiaire" value="0" size="2" onkeyup="calculQuotas();" /></td>
+					<td align="right"><input type="text" name="textfieldAnimateursSFstagiaire" value="0" size="2"
+							onkeyup="calculQuotas();" /></td>
 				</tr>
 				<tr>
 					<td width="61%"><label>Sans qualification</label></td>
-					<td align="right"><input type="text" name="textfieldNonQualifies" value="0" size="2" onkeyup="calculQuotas();" /></td>
+					<td align="right"><input type="text" name="textfieldNonQualifies" value="0" size="2"
+							onkeyup="calculQuotas();" /></td>
 				</tr>
 			</table>
 		</fieldset>
 		<fieldset>
-				<legend>Résultat</legend>
-				<table width="100%" border="0" cellspacing="2" cellpadding="0">
+			<legend>Résultat</legend>
+			<table width="100%" border="0" cellspacing="2" cellpadding="0">
 				<tr>
-						<td width="41%"><label>Résultat du calcul :</label></td>
-						<td><input style="width:100%" type="text" name="labelResultat" readonly="readonly" size="20" /></td>
+					<td width="41%"><label>Résultat du calcul :</label></td>
+					<td><input style="width:100%" type="text" name="labelResultat" readonly="readonly" size="20" /></td>
 				</tr>
 				<tr>
 					<td width="41%"><label>Détails :</label></td>
-					<td><textarea style="width:100%" name="labelDetail" rows="4" cols="40" disabled="disabled" readonly="readonly"></textarea></td>
+					<td><textarea style="width:100%;padding:1px" name="labelDetail" rows="4" cols="40" disabled="disabled"
+							readonly="readonly"></textarea></td>
 				</tr>
 			</table>
-			</fieldset>
+		</fieldset>
 	</form>
 	<h6>Version 1.0.0</h6>
 	<script type="text/javascript">
