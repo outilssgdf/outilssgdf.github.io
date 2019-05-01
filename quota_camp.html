@@ -62,6 +62,7 @@
 			var champResultat = document.forms["FormQuotas"].elements["labelResultat"];
 			var champDetail = document.forms["FormQuotas"].elements["labelDetail"];
 
+			champResultat.style.color = $resultat == true ? "green" : "red"
 			champResultat.value = $resultat == true ? "Parfait" : "Pas bon";
 			champDetail.value = $detail;
 		}
@@ -171,8 +172,8 @@
 		}
 	</script>
 
-	<h2>Calculateur du taux d’encadrement</h2>
-	<h5>(bas&eacute; sur le Guide R&eacute;glementaire du Scoutisme Fran&ccedil;ais)</h5>
+	<h3>Calculateur du taux d’encadrement</h3>
+	<h5>(bas&eacute; sur le Guide R&eacute;glementaire du Scoutisme Fran&ccedil;ais <a href="https://www.scoutisme-francais.fr/formation">lien)</a></h5>
 	<form id="FormQuotas" action="(EmptyReference!)" method="post" name="FormQuotas">
 		<fieldset>
 			<legend>Unité</legend><input type="radio" name="radioUnite" value="radioLouveteauxJeannettes" onclick="calculQuotas();"
