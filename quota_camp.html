@@ -6,7 +6,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
-	<title>Calcul de quota de camp</title>
+	<title>Calculateur du taux d’encadrement</title>
 </head>
 
 <body>
@@ -14,6 +14,7 @@
 	<script type="text/javascript">
 		function validationChamps() {
 			var nbDirecteurs = document.forms["FormQuotas"].elements["textfieldDirecteursSF"];
+			var nbDirecteursStagiaire = document.forms["FormQuotas"].elements["textfieldDirecteursSFstagiaire"];
 			var nbAnimateurs = document.forms["FormQuotas"].elements["textfieldAnimateursSF"];
 			var nbAnimateursStagiaire = document.forms["FormQuotas"].elements["textfieldAnimateursSFstagiaire"];
 			var nbNonQualifies = document.forms["FormQuotas"].elements["textfieldNonQualifies"];
@@ -21,6 +22,11 @@
 			if (nbDirecteurs.value == "") {
 				afficheResultat(false, "Merci de rentrer le nombre de personnes avec la qualification \"Directeur SF titulaire\"");
 				nbDirecteurs.focus();
+				return false;
+			}
+			if (nbDirecteursStagiaire.value == "") {
+				afficheResultat(false, "Merci de rentrer le nombre de personnes avec la qualification \"Directeur SF stagiaire\"");
+				nbDirecteursStagiaire.focus();
 				return false;
 			}
 			if (nbAnimateurs.value == "") {
@@ -64,6 +70,7 @@
 			var ret = validationChamps();
 			if (ret == true) {
 				var nbDirecteurs = document.forms["FormQuotas"].elements["textfieldDirecteursSF"].value;
+				var nbDirecteursStagiaire = document.forms["FormQuotas"].elements["textfieldDirecteursSFstagiaire"].value;
 				var nbAnimateurs = document.forms["FormQuotas"].elements["textfieldAnimateursSF"].value;
 				var nbAnimateursStagiaire = document.forms["FormQuotas"].elements["textfieldAnimateursSFstagiaire"].value;
 				var nbNonQualifies = document.forms["FormQuotas"].elements["textfieldNonQualifies"].value;
@@ -71,11 +78,11 @@
 				var nbJeunes = document.forms["FormQuotas"].elements["textfieldJeunes"].value;
 				var pk = (unite.toString().indexOf("radioPionniersCaravelles") == 0);
 
-				var effectifTotal = parseInt(nbDirecteurs, 10) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10) + parseInt(nbNonQualifies, 10);
+				var effectifTotal = parseInt(nbDirecteurs, 10) + parseInt(nbDirecteursStagiaire, 10) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10) + parseInt(nbNonQualifies, 10);
 				
 				if (pk == true) {
 					// Calcul pour une unité pionniers et/ou caravelles
-					var deltaDirSF = nbDirecteurs;
+					var deltaDirSF = parseInt(nbDirecteurs,10)+parseInt(nbDirecteursStagiaire,10);
 					if (deltaDirSF < 0) {
 						afficheResultat(false, "Pas de directeur SF");
 						return;
@@ -92,7 +99,7 @@
 
 					// Etape N°2
 					var encadrementEtape2 = Math.ceil(effectifTotal * 0.5 / 12);
-					var effectifEtape2 = parseInt(nbDirecteurs, 10) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10);
+					var effectifEtape2 = parseInt(nbDirecteurs, 10) + parseInt(nbDirecteursStagiaire, 10) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10);
 					var deltaEtape2 = effectifEtape2 - encadrementEtape2;
 					if (deltaEtape2 < 0) {
 						afficheResultat(false, "Encadrement \"par rapport au minimum d'animateurs : 50% titulaire\" insuffisant");
@@ -118,7 +125,7 @@
 				}
 				else {
 					// Calcul pour les autres unites
-					var deltaDirSF = nbDirecteurs - 1;
+					var deltaDirSF = parseInt(nbDirecteurs,10)+parseInt(nbDirecteursStagiaire,10)-1;
 					if (deltaDirSF < 0) {
 						afficheResultat(false, "Pas de directeur SF");
 						return;
@@ -135,7 +142,7 @@
 
 					// Etape N°2
 					var encadrementEtape2 = Math.ceil(effectifTotal * 0.5 / 12) + 1;
-					var effectifEtape2 = parseInt(nbDirecteurs, 10) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10);
+					var effectifEtape2 = parseInt(nbDirecteurs, 10) + parseInt(nbDirecteursStagiaire, 10) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10);
 					var deltaEtape2 = effectifEtape2 - encadrementEtape2;
 					if (deltaEtape2 < 0) {
 						afficheResultat(false, "Encadrement \"par rapport au minimum d'animateurs : 50% titulaire + 1 dir titulaire\" insuffisant");
@@ -164,7 +171,8 @@
 		}
 	</script>
 
-	<h2>Calcul de quota de camp (bas&eacute; sur le Guide R&eacute;glementaire du Scoutisme Fran&ccedil;ais)</h2>
+	<h2>Calculateur du taux d’encadrement</h2>
+	<h5>(bas&eacute; sur le Guide R&eacute;glementaire du Scoutisme Fran&ccedil;ais)</h5>
 	<form id="FormQuotas" action="(EmptyReference!)" method="post" name="FormQuotas">
 		<fieldset>
 			<legend>Unité</legend><input type="radio" name="radioUnite" value="radioLouveteauxJeannettes" onclick="calculQuotas();"
@@ -179,6 +187,10 @@
 				<tr>
 					<td width="61%"><label>Directeur SF titulaire</label></td>
 					<td align="right"><input type="text" name="textfieldDirecteursSF" value="0" size="2" onkeyup="calculQuotas();" /></td>
+				</tr>
+				<tr>
+					<td width="61%"><label>Directeur SF stagiaire</label></td>
+					<td align="right"><input type="text" name="textfieldDirecteursSFstagiaire" value="0" size="2" onkeyup="calculQuotas();" /></td>
 				</tr>
 				<tr>
 					<td width="61%">Animateur SF titulaire</label></td>
