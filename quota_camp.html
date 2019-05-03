@@ -103,7 +103,7 @@
 				if (pk == true) {
 					// Calcul pour une unité pionniers et/ou caravelles
 					var deltaDirSF = parseInt(nbDirecteurs, 10) + parseInt(nbDirecteursStagiaire, 10);
-					if (deltaDirSF < 0) {
+					if (deltaDirSF <= 0) {
 						afficheResultat(false, "Pas de directeur SF");
 						return;
 					}
