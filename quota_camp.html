@@ -128,7 +128,7 @@
 
 			// Etape N°2 bis
 			var encadrementEtape2bis = 0;
-			var effectifEtape2bis = ($pk == true ? parseInt(nbDirecteurs, 10) : 0) + parseInt(nbDirecteursStagiaire, 10) + parseInt(nbAnimateurs, 10);
+			var effectifEtape2bis = ($pk == false ? parseInt(nbDirecteurs, 10) : 0) + parseInt(nbDirecteursStagiaire, 10) + parseInt(nbAnimateurs, 10);
 			if (effectifEtape2bis == 3 || effectifEtape2bis == 4) {
 				encadrementEtape2bis = 1;
 			}
