@@ -119,7 +119,7 @@
 
 					// Etape N°2
 					var encadrementEtape2 = Math.ceil(effectifTotal * 0.5 / 12);
-					var effectifEtape2 = parseInt(nbDirecteurs, 10) + parseInt(nbDirecteursStagiaire, 10) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10);
+					var effectifEtape2 = parseInt(nbDirecteurs, 10) + parseInt(nbDirecteursStagiaire, 10) + parseInt(nbAnimateurs, 10);
 					var deltaEtape2 = effectifEtape2 - encadrementEtape2;
 					if (deltaEtape2 < 0) {
 						afficheResultat(false, "Encadrement \"par rapport au minimum d'animateurs : 50% titulaire\" insuffisant");
@@ -130,6 +130,11 @@
 					if (effectifTotal <= encadrementEtape1) {
 						var encadrementEtape3 = effectifTotal * 0.2;
 						var effectifEtape3 = parseInt(nbNonQualifies, 10);
+						var deltaEtape3 = encadrementEtape3 - effectifEtape3;
+						if (deltaEtape3 < 0) {
+							afficheResultat(false, "Encadrement \"par rapport au minimum d'animateurs : 80% titulaire ou stagiaire\" insuffisant");
+							return;
+						}
 						if (effectifTotal == 3 || effectifTotal == 4) {
 							if (nbNonQualifies > 0)
 								encadrementEtape3 = 1;
@@ -160,7 +165,7 @@
 
 					// Etape N°2
 					var encadrementEtape2 = Math.ceil(effectifTotal * 0.5 / 12) + 1;
-					var effectifEtape2 = parseInt(nbDirecteurs, 10) + parseInt(nbDirecteursStagiaire, 10) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10);
+					var effectifEtape2 = parseInt(nbDirecteurs, 10) + parseInt(nbDirecteursStagiaire, 10) + parseInt(nbAnimateurs, 10);
 					var deltaEtape2 = effectifEtape2 - encadrementEtape2;
 					if (deltaEtape2 < 0) {
 						afficheResultat(false, "Encadrement \"par rapport au minimum d'animateurs : 50% titulaire + 1 dir titulaire\" insuffisant");
@@ -171,6 +176,11 @@
 					if (effectifTotal <= encadrementEtape1) {
 						var encadrementEtape3 = effectifTotal * 0.2;
 						var effectifEtape3 = parseInt(nbNonQualifies, 10);
+						var deltaEtape3 = encadrementEtape3 - effectifEtape3;
+						if (deltaEtape3 < 0) {
+							afficheResultat(false, "Encadrement \"par rapport au minimum d'animateurs : 80% titulaire ou stagiaire + 1 dir titulaire\" insuffisant");
+							return;
+						}
 						if (effectifTotal == 3 || effectifTotal == 4) {
 							if (nbNonQualifies > 0)
 								encadrementEtape3 = 1;
