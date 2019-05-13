@@ -93,8 +93,8 @@
 			var nbAnimateursStagiaire = document.forms["FormQuotas"].elements["textfieldAnimateursSFstagiaire"].value;
 			var nbNonQualifies = document.forms["FormQuotas"].elements["textfieldNonQualifies"].value;
 			var nbJeunes = document.forms["FormQuotas"].elements["textfieldJeunes"].value;
-			
-			var effectifTotal = parseInt(nbDirecteurs, 10) + parseInt(nbDirecteursStagiaire, 10) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10) + parseInt(nbNonQualifies, 10);
+
+			var effectifTotal = ($pk == true ? parseInt(nbDirecteurs, 10) : 0) + ($pk == true ? parseInt(nbDirecteursStagiaire, 10) : 0) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10) + parseInt(nbNonQualifies, 10);
 
 			var deltaDirSF = parseInt(nbDirecteurs, 10);
 			if (deltaDirSF <= 0) {
@@ -109,31 +109,70 @@
 			}
 
 			// Etape N°1
-			var encadrementEtape1 = Math.ceil(nbJeunes / 12) + ($pk == true ? 0 : 1);
+			var encadrementEtape1 = Math.ceil(nbJeunes / 12);
 			var effectifEtape1 = effectifTotal;
-			var deltaEtape1 = effectifEtape1 - encadrementEtape1;
-			if (deltaEtape1 < 0) {
+			if (effectifEtape1 < encadrementEtape1) {
 				afficheResultat(false, "Encadrement \"1 chef pour 12 jeunes plus directeur\" insuffisant");
 				return;
 			}
+			
+			while (effectifTotal > encadrementEtape1)	{
+				if (nbNonQualifies > 0) {
+					nbNonQualifies--;
+				}
+				else
+					break;
+				effectifTotal = ($pk == true ? parseInt(nbDirecteurs, 10) : 0) + ($pk == true ? parseInt(nbDirecteursStagiaire, 10) : 0) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10) + parseInt(nbNonQualifies, 10);
+			}
+			while (effectifTotal > encadrementEtape1)	{
+				if (nbAnimateursStagiaire > 0) {
+					nbAnimateursStagiaire--;
+				}
+				else
+					break;
+				effectifTotal = ($pk == true ? parseInt(nbDirecteurs, 10) : 0) + ($pk == true ? parseInt(nbDirecteursStagiaire, 10) : 0) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10) + parseInt(nbNonQualifies, 10);
+			}
+			while (effectifTotal > encadrementEtape1)	{
+				if (nbAnimateurs > 0) {
+					nbAnimateurs--;
+				}
+				else
+					break;
+				effectifTotal = ($pk == true ? parseInt(nbDirecteurs, 10) : 0) + ($pk == true ? parseInt(nbDirecteursStagiaire, 10) : 0) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10) + parseInt(nbNonQualifies, 10);
+			}
+			while (effectifTotal > encadrementEtape1)	{
+				if (nbDirecteursStagiaire > 0) {
+					nbDirecteursStagiaire--;
+				}
+				else
+					break;
+				effectifTotal = ($pk == true ? parseInt(nbDirecteurs, 10) : 0) + ($pk == true ? parseInt(nbDirecteursStagiaire, 10) : 0) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10) + parseInt(nbNonQualifies, 10);
+			}
+			while (effectifTotal > encadrementEtape1)	{
+				if (nbDirecteurs > 0) {
+					nbDirecteurs--;
+				}
+				else
+					break;
+				effectifTotal = ($pk == true ? parseInt(nbDirecteurs, 10) : 0) + ($pk == true ? parseInt(nbDirecteursStagiaire, 10) : 0) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10) + parseInt(nbNonQualifies, 10);
+			}
 
 			// Etape N°2
-			var encadrementEtape2 = Math.ceil(effectifEtape1 * 0.5 / 12) + ($pk == true ? 0 : 1);
-			var effectifEtape2 = parseInt(nbDirecteurs, 10) + parseInt(nbDirecteursStagiaire, 10) + parseInt(nbAnimateurs, 10);
-			var deltaEtape2 = effectifEtape2 - encadrementEtape2;
-			if (deltaEtape2 < 0) {
-				afficheResultat(false, "Encadrement \"par rapport au minimum d'animateurs : 50% titulaire + 1 dir titulaire\" insuffisant");
+			var encadrementEtape2 = effectifTotal * 0.5;
+			var effectifEtape2 = ($pk == true ? parseInt(nbDirecteurs, 10) : 0) + ($pk == true ? parseInt(nbDirecteursStagiaire, 10) : 0) + parseInt(nbAnimateurs, 10);
+			if (effectifEtape2 < encadrementEtape2) {
+				afficheResultat(false, "Encadrement \"par rapport au minimum d'animateurs : 50% titulaire\" insuffisant");
 				return;
 			}
 
 			// Etape N°2 bis
 			var encadrementEtape2bis = 0;
-			var effectifEtape2bis = ($pk == false ? parseInt(nbDirecteurs, 10) : 0) + parseInt(nbDirecteursStagiaire, 10) + parseInt(nbAnimateurs, 10);
-			if (effectifEtape2bis == 3 || effectifEtape2bis == 4) {
+			var effectifEtape2bis = ($pk == true ? parseInt(nbDirecteurs, 10) : 0) + ($pk == true ? parseInt(nbDirecteursStagiaire, 10) : 0) + parseInt(nbAnimateurs, 10);
+			if (effectifTotal == 3 || effectifTotal == 4) {
 				encadrementEtape2bis = 1;
 			}
 			else {
-				encadrementEtape2bis = encadrementEtape1 * 0.2;
+				encadrementEtape2bis = effectifTotal * 0.2;
 			}
 			
 			var effectifEtape2bis = parseInt(nbNonQualifies, 10);
@@ -141,7 +180,7 @@
 				effectifEtape2bis = effectifEtape2bis - (effectifTotal - encadrementEtape1);
 			}
 			if (effectifEtape2bis > 0 && effectifEtape2bis > encadrementEtape2bis) {
-				afficheResultat(false, "Encadrement \"par rapport au minimum d'animateurs : 80% titulaire ou stagiaire + 1 dir titulaire\" insuffisant");
+				afficheResultat(false, "Encadrement \"par rapport au minimum d'animateurs : 80% titulaire ou stagiaire\" insuffisant");
 				return;
 			}
 			afficheResultat(true, "");
