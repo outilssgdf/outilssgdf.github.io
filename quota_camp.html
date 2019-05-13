@@ -95,6 +95,7 @@
 			var nbJeunes = document.forms["FormQuotas"].elements["textfieldJeunes"].value;
 
 			var effectifTotal = ($pk == true ? parseInt(nbDirecteurs, 10) : 0) + ($pk == true ? parseInt(nbDirecteursStagiaire, 10) : 0) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10) + parseInt(nbNonQualifies, 10);
+			var effectifTotal2 = parseInt(nbDirecteurs, 10) + parseInt(nbDirecteursStagiaire, 10) + parseInt(nbAnimateurs, 10) + parseInt(nbAnimateursStagiaire, 10) + parseInt(nbNonQualifies, 10);
 
 			var deltaDirSF = parseInt(nbDirecteurs, 10);
 			if (deltaDirSF <= 0) {
@@ -110,7 +111,7 @@
 
 			// Etape N°1
 			var encadrementEtape1 = Math.ceil(nbJeunes / 12);
-			var effectifEtape1 = effectifTotal;
+			var effectifEtape1 = ($pk == true ? effectifTotal2 : effectifTotal2-1);
 			if (effectifEtape1 < encadrementEtape1) {
 				afficheResultat(false, "Encadrement \"1 chef pour 12 jeunes plus directeur\" insuffisant");
 				return;
