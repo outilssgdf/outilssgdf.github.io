@@ -108,6 +108,12 @@
 				afficheResultat(false, "Pas de directeur SF");
 				return;
 			}
+			
+			// Ajustement du nb de directeurs
+			if (nbDirecteurs > 1) {
+				nbDirecteurs = 1;
+				nbAnimateurs+=(nbDirecteurs-1);
+			}
 
 			// Etape N°1
 			var encadrementEtape1 = Math.ceil(nbJeunes / 12);
@@ -255,7 +261,7 @@
 			</table>
 		</fieldset>
 	</form>
-	<h6>Version 1.0.1</h6>
+	<h6>Version 1.0.2 - SBB</h6>
 	<script type="text/javascript">
 		calculQuotas();
 	</script>
